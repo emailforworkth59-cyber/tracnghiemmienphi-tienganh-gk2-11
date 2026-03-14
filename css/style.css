@@ -286,3 +286,24 @@ button {
 .dark .reading-box {
   background: #2a2a2a;
 }
+/* ===== DARK PROGRESS ===== */
+
+.dark #progressPanel {
+  background: #1e1e1e;
+  color: #e5e5e5;
+}
+
+.dark .progress-item {
+  background: #444;
+  color: white;
+}
+
+.dark .progress-done {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark .progress-wrong {
+  background: #ef4444;
+  color: white;
+}
