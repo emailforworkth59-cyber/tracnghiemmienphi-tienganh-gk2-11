@@ -108,7 +108,7 @@ ${block.passage}
 
     let div = document.createElement("div");
     div.className = "question";
-
+    div.dataset.answer = q.answer;
     let html = `<h3>Câu ${index + 1}: ${q.q}</h3>`;
 
     const letters = ["A", "B", "C", "D"];
@@ -136,6 +136,9 @@ function renderMCQ(q, index) {
 
   let div = document.createElement("div");
   div.className = "question";
+
+  // gắn đáp án
+  div.dataset.answer = q.answer;
 
   let html = `
 <h3>Câu ${index + 1}</h3>
@@ -307,78 +310,62 @@ function parseNumber(value) {
 // ===== grade =====
 
 function gradeQuiz() {
-  let score = 0;
+  let correct = 0;
   let wrong = [];
 
-  const totalQuestions = document.querySelectorAll(".question").length;
+  const questionDOM = document.querySelectorAll(".question");
 
-  for (let index = 0; index < totalQuestions; index++) {
-    let q = currentQuestions.find((x) => {
-      if (x.type === "reading") return false;
-      return true;
-    });
-  }
+  questionDOM.forEach((qDiv, index) => {
+    let radios = qDiv.querySelectorAll("input[type=radio]");
+    let checkboxes = qDiv.querySelectorAll("input[type=checkbox]");
+    let text = qDiv.querySelector("input[type=text]");
 
-  currentQuestions.forEach((q, baseIndex) => {
-    if (q.type === "reading") {
-      q.questions.forEach((sub, i) => {
-        let index = baseIndex + i;
+    // ===== MCQ / FILL =====
+    if (radios.length > 0) {
+      let selected = qDiv.querySelector("input[type=radio]:checked");
 
-        let selected = document.querySelector(
-          `input[name="q${index}"]:checked`,
-        );
+      if (!selected) {
+        wrong.push(index);
+      } else {
+        let answer = Number(qDiv.dataset.answer);
 
-        if (!selected) wrong.push(index);
-        else if (Number(selected.value) === sub.answer) score++;
-        else wrong.push(index);
-      });
-    } else {
-      let selected = document.querySelector(
-        `input[name="q${baseIndex}"]:checked`,
-      );
-      let input = document.querySelector(`input[name="q${baseIndex}"]`);
-
-      if (q.type === "mcq" || q.type === "fill") {
-        if (!selected) wrong.push(baseIndex);
-        else if (Number(selected.value) === q.answer) score++;
-        else wrong.push(baseIndex);
-      }
-
-      if (q.type === "truefalse") {
-        let boxes = document.querySelectorAll(`input[name="q${baseIndex}"]`);
-
-        let correctCount = 0;
-
-        boxes.forEach((box, i) => {
-          let checked = box.checked;
-          let should = q.answer.includes(i);
-
-          if (checked === should) correctCount++;
-        });
-
-        score += correctCount * 0.25;
-
-        if (correctCount !== 4) wrong.push(baseIndex);
-      }
-
-      if (q.type === "short") {
-        let user = parseNumber(input.value);
-        let correct = parseNumber(q.answer);
-
-        if (
-          !isNaN(user) &&
-          !isNaN(correct) &&
-          Math.abs(user - correct) <= 0.5
-        ) {
-          score++;
+        if (Number(selected.value) === answer) {
+          correct++;
         } else {
-          wrong.push(baseIndex);
+          wrong.push(index);
         }
+      }
+    }
+
+    // ===== TRUE FALSE =====
+    else if (checkboxes.length > 0) {
+      let answer = qDiv.dataset.answer.split(",").map(Number);
+
+      let ok = true;
+
+      checkboxes.forEach((box, i) => {
+        let should = answer.includes(i);
+        if (box.checked !== should) ok = false;
+      });
+
+      if (ok) correct++;
+      else wrong.push(index);
+    }
+
+    // ===== SHORT =====
+    else if (text) {
+      let answer = parseFloat(qDiv.dataset.answer);
+      let user = parseFloat(text.value);
+
+      if (!isNaN(user) && Math.abs(user - answer) <= 0.5) {
+        correct++;
+      } else {
+        wrong.push(index);
       }
     }
   });
 
   review(wrong);
 
-  return score;
+  return correct;
 }

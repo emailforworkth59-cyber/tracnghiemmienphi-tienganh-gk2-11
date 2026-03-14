@@ -14,12 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ===== nộp bài =====
+// ===== nộp bài =====
 document.getElementById("submit").onclick = function () {
-  let score = gradeQuiz();
+  let correct = gradeQuiz();
+  let total = document.querySelectorAll(".question").length;
 
-  document.getElementById("result").innerHTML = `Điểm: ${score}`;
+  document.getElementById("result").innerHTML = `Đúng ${correct}/${total} câu`;
 };
-
 // ===== làm lại =====
 
 document.getElementById("retry").onclick = function () {
