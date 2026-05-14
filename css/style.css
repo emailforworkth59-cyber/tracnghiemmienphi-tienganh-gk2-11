@@ -353,3 +353,126 @@ button {
 .dark .modal-box {
   background: #1e1e1e;
 }
+/* Container hiển thị kết quả so sánh */
+.diff-result {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f8fafc; /* Nền xám rất nhạt */
+  border: 1px solid #e2e8f0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Tùy chỉnh màu sắc các từ trong diff */
+.diff-word {
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.diff-word.wrong {
+  color: #dc2626; /* Đỏ đậm hơn chút cho dễ đọc */
+  text-decoration: line-through;
+  background-color: #fee2e2; /* Highlight nhẹ nền đỏ */
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.diff-word.missing {
+  color: #16a34a; /* Xanh lá */
+  font-weight: 600;
+  background-color: #dcfce7; /* Highlight nhẹ nền xanh */
+  padding: 0 2px;
+  border-radius: 2px;
+  text-decoration: underline; /* Thêm gạch chân để nhấn mạnh từ bị thiếu */
+}
+
+/* ===== DARK MODE CHO DIFF ===== */
+.dark .diff-result {
+  background-color: #262626;
+  border-color: #404040;
+  color: #e5e5e5;
+}
+
+.dark .diff-word.wrong {
+  color: #ff8080;
+  background-color: #4c1d1d;
+}
+
+.dark .diff-word.missing {
+  color: #4ade80;
+  background-color: #14532d;
+}
+.rewrite-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  box-sizing: border-box; /* Đảm bảo padding không làm tràn khung */
+  transition: border-color 0.2s;
+}
+
+.rewrite-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+/* Dark mode cho input */
+.dark .rewrite-input {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e5e5e5;
+}
+/* Container hoặc class dùng chung cho nút nổi */
+#progressBubble,
+.floating-btn {
+  position: fixed;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+/* Nút ba gạch hiện tại */
+#progressBubble {
+  bottom: 20px;
+  background: #4f46e5;
+}
+
+/* Nút Nộp bài mới nằm TRÊN nút ba gạch */
+.floating-btn {
+  bottom: 85px; /* 20px + 55px + 10px khoảng cách */
+  background: #16a34a; /* Màu xanh lá cho nút nộp bài */
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+}
+
+.floating-btn:hover {
+  background: #15803d;
+  transform: scale(1.05);
+}
+
+.floating-btn:active {
+  transform: scale(0.95);
+}
+
+/* Dark mode cho nút nộp bài */
+.dark .floating-btn {
+  background: #22c55e;
+}

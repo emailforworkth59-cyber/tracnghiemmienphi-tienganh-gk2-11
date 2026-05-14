@@ -67,3 +67,19 @@ function openImage(img) {
 function closeImage() {
   document.getElementById("imgModal").style.display = "none";
 }
+// Thay đổi hoặc bổ sung thêm sự kiện cho nút nổi
+const btnSubmit = document.getElementById("submit"); // Nút cũ dưới bài
+const btnFloating = document.getElementById("floatingSubmit"); // Nút nổi mới
+
+const handleSubmit = function () {
+  let correct = gradeQuiz();
+  let total = document.querySelectorAll(".question").length;
+  document.getElementById("result").innerHTML = `Đúng ${correct}/${total} câu`;
+
+  // Tự động cuộn xuống xem kết quả
+  document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+};
+
+// Gán cho cả 2 nút nếu bạn muốn giữ cả hai
+if (btnSubmit) btnSubmit.onclick = handleSubmit;
+if (btnFloating) btnFloating.onclick = handleSubmit;
